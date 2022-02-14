@@ -1,5 +1,7 @@
 package com.example.testapp.model
 
+import com.example.newsfeedapp.model.News
+
 data class Data(
     val news: List<News>?,
     val count: String?,

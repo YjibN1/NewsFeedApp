@@ -8,7 +8,7 @@ import com.example.newsfeedapp.model.ShortNews
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.model.Data
-import com.example.testapp.model.News
+import com.example.newsfeedapp.model.News
 import com.example.testapp.model.QueryResult
 import getQueryResult
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
 
                     val shortNews = mutableListOf<ShortNews>()
 
+                    // TODO: вынести в функцию
                     newsList.forEach {
                         // Сохраняем список
                         shortNews.add(it.toShortNews())
@@ -58,6 +59,12 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
     }
 
+    fun insertNews(news: News) {
+        // lifecycleScope существует в пределах жизни активити
+        lifecycleScope.launch(Dispatchers.IO) {
+            (applicationContext as App).repository.insert(news = news)
+        }
+    }
     private fun initRecyclerView() {
         newsAdapter = NewsAdapter(this)
 
@@ -68,12 +75,23 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         }
     }
 
-    private fun insertNews(news: ShortNews) {
-//        // Work on background thread
-        // Запись в бд
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            (applicationContext as App).repository.insert(news = news)
-//        }
+    private fun retrieveNews() {
+        // Work on background thread
+        lifecycleScope.launch(Dispatchers.IO) {
+            val news = (applicationContext as App).repository.getAllNews()
+            // Work on main thread
+
+            val shortNews = mutableListOf<ShortNews>()
+            withContext(Dispatchers.Main) {
+                news.forEach {
+                    // Сохраняем список
+                    shortNews.add(it.toShortNews())
+                }
+
+
+                newsAdapter.setNews(shortNews)
+            }
+        }
     }
 
     override fun onItemClicked(id: String) {

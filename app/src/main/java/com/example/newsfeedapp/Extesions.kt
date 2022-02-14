@@ -1,7 +1,7 @@
 package com.example.newsfeedapp
 
 import com.example.newsfeedapp.model.ShortNews
-import com.example.testapp.model.News
+import com.example.newsfeedapp.model.News
 import com.example.testapp.model.QueryResult
 
 fun News.toShortNews(): ShortNews {

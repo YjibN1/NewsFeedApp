@@ -3,7 +3,6 @@ package com.example.newsfeedapp
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsfeedapp.model.ShortNews
-import com.example.testapp.model.News
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsViewHolder(

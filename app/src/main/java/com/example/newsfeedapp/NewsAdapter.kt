@@ -3,10 +3,8 @@ package com.example.newsfeedapp
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsfeedapp.model.ShortNews
-import com.example.testapp.model.News
 
 class NewsAdapter(private val itemClickListener: OnItemClickListener):
     RecyclerView.Adapter<NewsViewHolder>() {
@@ -16,6 +14,13 @@ class NewsAdapter(private val itemClickListener: OnItemClickListener):
     @SuppressLint("NotifyDataSetChanged")
     fun addNews(news: ShortNews) {
         newsList.add(news)
+        notifyDataSetChanged()
+    }
+
+    // Обновляет данные
+    fun setNews(news: List<ShortNews>){
+        newsList.clear()
+        newsList.addAll(news)
         notifyDataSetChanged()
     }
 
