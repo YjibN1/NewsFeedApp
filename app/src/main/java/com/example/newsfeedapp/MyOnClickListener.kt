@@ -1,5 +1,5 @@
 package com.example.newsfeedapp
 
 interface MyOnClickListener {
-    fun onClicked(tag : String)
+    fun onClicked(mobile_url : String?)
 }

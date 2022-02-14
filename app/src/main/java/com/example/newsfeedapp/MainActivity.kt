@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         }
         Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
 
-
-
         // Вызов метода для отображения содержимого бд при запуске
         retrieveNews()
     }
@@ -83,10 +81,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         newsAdapter = NewsAdapter(object : MyOnClickListener{
-            override fun onClicked(tag: String) {
-                Log.d("TagsListActivity", "tag = " + tag)
+            override fun onClicked(mobile_url: String?) {
+                Log.d("Activity", mobile_url ?: "")
             }
-
         })
 
         with(newsList) {
@@ -98,11 +95,10 @@ class MainActivity : AppCompatActivity() {
 
     // Извлекаем и отображаем содержимое бд
     private fun retrieveNews() {
-        // Work on background thread
+        // Работа в фоновом потоке
         lifecycleScope.launch(Dispatchers.IO) {
             val news = (applicationContext as App).repository.getAllNews()
-            // Work on main thread
-
+            // Работа в главном потоке
             withContext(Dispatchers.Main) {
                 newsAdapter.setNews(news)
             }

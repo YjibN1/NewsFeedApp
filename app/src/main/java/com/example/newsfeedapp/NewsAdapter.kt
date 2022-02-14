@@ -40,8 +40,8 @@ class NewsAdapter(private val onClickListener: MyOnClickListener):
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.bind(newsList[position])
 
-        holder.tagTV.setOnClickListener {
-            onClickListener.onClicked("Информация в ячейку")
+        holder.cardView.setOnClickListener {
+            onClickListener.onClicked(newsList[position].mobile_url)
         }
     }
 }
