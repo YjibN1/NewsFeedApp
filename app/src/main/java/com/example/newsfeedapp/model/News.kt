@@ -3,7 +3,6 @@ package com.example.newsfeedapp.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.newsfeedapp.model.News.Companion.TABLE_NAME
-import com.example.newsfeedapp.model.ShortNews
 
 
 @Entity(

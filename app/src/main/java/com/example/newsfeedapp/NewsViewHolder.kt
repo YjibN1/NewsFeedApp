@@ -2,7 +2,7 @@ package com.example.newsfeedapp
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.newsfeedapp.model.ShortNews
+import com.example.newsfeedapp.model.News
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsViewHolder(
@@ -10,7 +10,7 @@ class NewsViewHolder(
     private val itemClickListener: NewsAdapter.OnItemClickListener
 ) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(news: ShortNews) {
+    fun bind(news: News) {
         with(itemView) {
             news.run {
                 news_id.text = id

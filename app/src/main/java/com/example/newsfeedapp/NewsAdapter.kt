@@ -4,21 +4,21 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.newsfeedapp.model.ShortNews
+import com.example.newsfeedapp.model.News
 
 class NewsAdapter(private val itemClickListener: OnItemClickListener):
     RecyclerView.Adapter<NewsViewHolder>() {
 
-    private val newsList = mutableListOf<ShortNews>()
+    private val newsList = mutableListOf<News>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addNews(news: ShortNews) {
+    fun addNews(news: News) {
         newsList.add(news)
         notifyDataSetChanged()
     }
 
     // Обновляет данные
-    fun setNews(news: List<ShortNews>){
+    fun setNews(news: List<News>){
         newsList.clear()
         newsList.addAll(news)
         notifyDataSetChanged()

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.newsfeedapp.model.ShortNews
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.lifecycle.lifecycleScope
 import com.example.testapp.model.Data
@@ -41,15 +40,11 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
                     val newsList: List<News> = getNewsList(serviceResponse)
                     Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!2")
 
-                    val shortNews = mutableListOf<ShortNews>()
 
                     // TODO: вынести в функцию
                     newsList.forEach {
-                        // Сохраняем список
-                        shortNews.add(it.toShortNews())
                         // Передаем данные в адаптер
-                        newsAdapter.addNews(it.toShortNews())
-
+                        newsAdapter.addNews(it)
                     }
                     // Запись в бд
                     //insertNews(shortNews)
@@ -81,15 +76,8 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
             val news = (applicationContext as App).repository.getAllNews()
             // Work on main thread
 
-            val shortNews = mutableListOf<ShortNews>()
             withContext(Dispatchers.Main) {
-                news.forEach {
-                    // Сохраняем список
-                    shortNews.add(it.toShortNews())
-                }
-
-
-                newsAdapter.setNews(shortNews)
+                newsAdapter.setNews(news)
             }
         }
     }
