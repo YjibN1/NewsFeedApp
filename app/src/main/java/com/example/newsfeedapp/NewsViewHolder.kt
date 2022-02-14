@@ -1,14 +1,16 @@
 package com.example.newsfeedapp
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsfeedapp.model.News
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsViewHolder(
     itemView: View,
-    private val itemClickListener: NewsAdapter.OnItemClickListener
 ) : RecyclerView.ViewHolder(itemView) {
+
+    val tagTV: TextView = itemView.findViewById<View>(R.id.news_id) as TextView
 
     fun bind(news: News) {
         with(itemView) {

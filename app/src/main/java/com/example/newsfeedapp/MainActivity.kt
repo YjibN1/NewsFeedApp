@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var newsAdapter: NewsAdapter
 
@@ -55,6 +55,8 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         }
         Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
 
+
+
         // Вызов метода для отображения содержимого бд при запуске
         retrieveNews()
     }
@@ -80,7 +82,12 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
     }
 
     private fun initRecyclerView() {
-        newsAdapter = NewsAdapter(this)
+        newsAdapter = NewsAdapter(object : MyOnClickListener{
+            override fun onClicked(tag: String) {
+                Log.d("TagsListActivity", "tag = " + tag)
+            }
+
+        })
 
         with(newsList) {
             this.layoutManager = LinearLayoutManager(context)
@@ -100,11 +107,6 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
                 newsAdapter.setNews(news)
             }
         }
-    }
-
-    // Действие при нажатии
-    override fun onItemClicked(id: String) {
-        TODO("Заглушка для нажатия")
     }
 }
 

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsfeedapp.model.News
 
-class NewsAdapter(private val itemClickListener: OnItemClickListener):
+class NewsAdapter(private val onClickListener: MyOnClickListener):
     RecyclerView.Adapter<NewsViewHolder>() {
 
     private val newsList = mutableListOf<News>()
@@ -31,7 +31,7 @@ class NewsAdapter(private val itemClickListener: OnItemClickListener):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
-        return NewsViewHolder(itemView, itemClickListener)
+        return NewsViewHolder(itemView)
     }
 
     override fun getItemCount() = newsList.size
@@ -39,9 +39,9 @@ class NewsAdapter(private val itemClickListener: OnItemClickListener):
     // Заполняет данные ячейки
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.bind(newsList[position])
-    }
 
-    interface OnItemClickListener {
-        fun onItemClicked(id: String)
+        holder.tagTV.setOnClickListener {
+            onClickListener.onClicked("Информация в ячейку")
+        }
     }
 }
