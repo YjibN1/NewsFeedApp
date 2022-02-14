@@ -1,15 +1,17 @@
 package com.example.newsfeedapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.testapp.model.Data
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsfeedapp.model.News
+import com.example.testapp.model.Data
 import com.example.testapp.model.QueryResult
 import getQueryResult
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initRecyclerView()
+        initRecyclerView(this)
 
         // Обработчик нажатий
         addPersonButton.setOnClickListener {
@@ -79,9 +81,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView(app: AppCompatActivity) {
         newsAdapter = NewsAdapter(object : MyOnClickListener{
             override fun onClicked(mobile_url: String?) {
+
+                val intent = Intent(app, BrowserActivity::class.java) // контекст и класс
+                intent.putExtra("url", mobile_url ?: "")
+                startActivity(intent)
+
                 Log.d("Activity", mobile_url ?: "")
             }
         })
@@ -105,6 +112,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
