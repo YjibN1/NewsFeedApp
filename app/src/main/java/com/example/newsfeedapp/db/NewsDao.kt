@@ -11,9 +11,13 @@ interface NewsDao {
     @Insert
     suspend fun insert(news: News)
 
-    // Извлекаем данные
+    // Извлечение id новостей
+    @Query("SELECT ${News.ID} FROM ${News.TABLE_NAME}")
+    suspend fun getAllNewsId(): List<String>
+
+    // Извлечение новостей
     @Query("SELECT * FROM ${News.TABLE_NAME}")
-    suspend fun getAllPersons(): List<News>
+    suspend fun getAllNews(): List<News>
 
 
     @Query("DELETE FROM ${News.TABLE_NAME} WHERE ${News.ID} = :id")

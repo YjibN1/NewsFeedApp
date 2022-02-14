@@ -26,6 +26,7 @@ class NewsAdapter(private val itemClickListener: OnItemClickListener):
     }
 
 
+
     // Вызывается для создания ячейки
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val itemView =

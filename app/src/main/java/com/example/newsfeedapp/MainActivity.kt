@@ -31,18 +31,20 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
 
             // Получение данных
             lifecycleScope.launch(Dispatchers.IO) {
-                // Получаем ответ
+                // Получение ответа от сервиса
                 serviceResponse = getQueryResult().getInfo()
+
                 Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!1")
 
                 withContext(Dispatchers.Main) {
-                    // Получаем список данных
+                    // Преобразование ответа в список новостей
                     val newsList: List<News> = getNewsList(serviceResponse)
-                    Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!2")
+                    // Формирование списка уникальных новостей
+                    val uniqueNews: List<News> = getUniqueNews(newsList)
 
-
-                    newsList.forEach {
-                        // Передача данныч в адаптер
+                    // TODO: Разделить отображение и запись в базу данных
+                    uniqueNews.forEach {
+                        // Передача данныx в адаптер
                         newsAdapter.addNews(it)
 
                         // Запись в бд
@@ -53,9 +55,21 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         }
         Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
 
-
-        // Вызываем метод отображения бд при запуске
+        // Вызов метода для отображения содержимого бд при запуске
         retrieveNews()
+    }
+
+    private suspend fun getUniqueNews(newsList: List<News>): List<News> {
+        var idNewsList: List<String> = listOf()
+        // Извлечение доступных id из бд
+        idNewsList = (applicationContext as App).repository.getAllNewsId()
+
+        val result = mutableListOf<News>()
+        newsList.forEach {
+            if (it.id !in idNewsList)
+                result.add(it)
+        }
+        return result
     }
 
     private fun insertNews(news: News) {
@@ -64,6 +78,7 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
             (applicationContext as App).repository.insert(news = news)
         }
     }
+
     private fun initRecyclerView() {
         newsAdapter = NewsAdapter(this)
 
@@ -74,6 +89,7 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         }
     }
 
+    // Извлекаем и отображаем содержимое бд
     private fun retrieveNews() {
         // Work on background thread
         lifecycleScope.launch(Dispatchers.IO) {
@@ -86,6 +102,7 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
         }
     }
 
+    // Действие при нажатии
     override fun onItemClicked(id: String) {
         TODO("Заглушка для нажатия")
     }

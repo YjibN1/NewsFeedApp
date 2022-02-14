@@ -19,7 +19,7 @@ class NewsViewHolder(
 
                 //Glide.with(context).load(avatarUrl).into(avatarImageView)
 
-
+                    // TODO: Слушатель нажатия
 //                deleteItemImageView.setOnClickListener {
 //                    itemClickListener.onItemClicked(id = id)
 //                }
