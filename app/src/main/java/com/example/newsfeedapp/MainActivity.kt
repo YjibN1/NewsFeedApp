@@ -41,20 +41,24 @@ class MainActivity : AppCompatActivity(), NewsAdapter.OnItemClickListener {
                     Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!2")
 
 
-                    // TODO: вынести в функцию
                     newsList.forEach {
-                        // Передаем данные в адаптер
+                        // Передача данныч в адаптер
                         newsAdapter.addNews(it)
+
+                        // Запись в бд
+                        insertNews(it)
                     }
-                    // Запись в бд
-                    //insertNews(shortNews)
                 }
             }
         }
         Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
+
+
+        // Вызываем метод отображения бд при запуске
+        retrieveNews()
     }
 
-    fun insertNews(news: News) {
+    private fun insertNews(news: News) {
         // lifecycleScope существует в пределах жизни активити
         lifecycleScope.launch(Dispatchers.IO) {
             (applicationContext as App).repository.insert(news = news)

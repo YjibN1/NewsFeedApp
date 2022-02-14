@@ -21,6 +21,7 @@ class NewsAdapter(private val itemClickListener: OnItemClickListener):
     fun setNews(news: List<News>){
         newsList.clear()
         newsList.addAll(news)
+        // TODO: менять конкретные позиции с помощью notifyItemChanged(position), а не весь список
         notifyDataSetChanged()
     }
 
