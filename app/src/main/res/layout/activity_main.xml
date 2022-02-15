@@ -12,17 +12,17 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addPersonButton"
+        android:id="@+id/refreshNewsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:contentDescription="TODO"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp"
         app:srcCompat="@drawable/ic_refresh"
-        tools:srcCompat="@drawable/ic_refresh" />
+        tools:srcCompat="@drawable/ic_refresh"
+        android:contentDescription="@string/description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

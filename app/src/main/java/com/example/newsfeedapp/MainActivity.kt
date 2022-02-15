@@ -2,18 +2,15 @@ package com.example.newsfeedapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsfeedapp.model.News
-import com.example.newsfeedapp.model.Data
 import com.example.newsfeedapp.model.QueryResult
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var newsAdapter: NewsAdapter
@@ -23,70 +20,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initRecyclerView(this)
-
-        // Обработчик нажатий
-        addPersonButton.setOnClickListener {
-            var serviceResponse: QueryResult = QueryResult(false, Data(listOf<News>(), "0", ""))
-
-            // Получение данных
+        // Обработчик нажатия на FloatingActionButton
+        refreshNewsButton.setOnClickListener {
+            var serviceResponse: QueryResult
             lifecycleScope.launch(Dispatchers.IO) {
                 // Получение ответа от сервиса
                 serviceResponse = getQueryResult().getInfo()
 
-                Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!1")
-
                 withContext(Dispatchers.Main) {
-                    // Преобразование ответа в список новостей
                     val newsList: List<News> = getNewsList(serviceResponse)
-                    // Формирование списка уникальных новостей
                     val uniqueNews: List<News> = getUniqueNews(newsList)
-
-                    // TODO: Разделить отображение и запись в базу данных
                     uniqueNews.forEach {
-                        // Передача данныx в адаптер
                         newsAdapter.addNews(it)
-
-                        // Запись в бд
+                    }
+                    // Запись новостей в бд
+                    uniqueNews.forEach {
                         insertNews(it)
                     }
                 }
             }
         }
-        Log.d("!!!!!!!!!!!!!! ", "!!!!!!!!!!!!!!3")
-
-        // Вызов метода для отображения содержимого бд при запуске
+        // Отображение содержимого бд при создании активити
         retrieveNews()
     }
 
-    private suspend fun getUniqueNews(newsList: List<News>): List<News> {
-        var idNewsList: List<String> = listOf()
-        // Извлечение доступных id из бд
-        idNewsList = (applicationContext as App).repository.getAllNewsId()
-
-        val result = mutableListOf<News>()
-        newsList.forEach {
-            if (it.id !in idNewsList)
-                result.add(it)
-        }
-        return result
-    }
-
-    private fun insertNews(news: News) {
-        // lifecycleScope существует в пределах жизни активити
-        lifecycleScope.launch(Dispatchers.IO) {
-            (applicationContext as App).repository.insert(news = news)
-        }
-    }
-
+    /**
+     * Иницилазация RecyclerView
+     */
     private fun initRecyclerView(app: AppCompatActivity) {
-        newsAdapter = NewsAdapter(object : OnClickListener{
+        newsAdapter = NewsAdapter(object : OnClickListener {
+            // Обработчик нажатия на ячейку новости
             override fun onClicked(mobile_url: String?) {
-
-                val intent = Intent(app, BrowserActivity::class.java) // контекст и класс
+                val intent = Intent(app, BrowserActivity::class.java)
                 intent.putExtra("url", mobile_url ?: "")
                 startActivity(intent)
-
-                Log.d("Activity", mobile_url ?: "")
             }
         })
 
@@ -97,17 +64,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getNewsList(qRes: QueryResult) : List<News> = qRes.data?.news ?: listOf<News>()
+    /**
+     * Извлечение списка новостей из [qRes].
+     * @param [qRes] Ответ от сервиса.
+     * @return Пустой список, если ответ пустой.
+     */
+    private fun getNewsList(qRes: QueryResult) = qRes.data?.news ?: listOf()
 
-    // Извлекаем и отображаем содержимое бд
-    private fun retrieveNews() {
-        // Работа в фоновом потоке
+    /**
+     * Отбирает из [newsList] уникальные новости (которых нет в бд).
+     * @param[newsList] Исходный список новостей.
+     */
+    private suspend fun getUniqueNews(newsList: List<News>): List<News> {
+        val idNewsList = (applicationContext as App).repository.getAllNewsId()
+        val result = mutableListOf<News>()
+        newsList.forEach {
+            if (it.id !in idNewsList)
+                result.add(it)
+        }
+        return result.toList()
+    }
+
+    /**
+     * Запись [news] в бд.
+     * @param [news] Новость.
+     */
+    private fun insertNews(news: News) =
         lifecycleScope.launch(Dispatchers.IO) {
-            val news = (applicationContext as App).repository.getAllNews()
-            // Работа в главном потоке
+            (applicationContext as App).repository.insert(news = news)
+        }
+
+    /**
+     * Извлечение и отображение новостей на RecyclerView
+     */
+    private fun retrieveNews() =
+        lifecycleScope.launch(Dispatchers.IO) {
+            val newsList = (applicationContext as App).repository.getAllNews()
             withContext(Dispatchers.Main) {
-                newsAdapter.setNews(news)
+                newsAdapter.setNews(newsList)
             }
         }
-    }
 }
