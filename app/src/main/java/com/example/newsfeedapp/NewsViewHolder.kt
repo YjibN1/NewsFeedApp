@@ -21,7 +21,6 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(news: News) {
         with(itemView) {
             news.run {
-                news_id.text = id
                 news_title.text = title
                 news_annotation.text = annotation
             }
