@@ -2,15 +2,27 @@ package com.example.newsfeedapp.db
 
 import com.example.newsfeedapp.model.News
 
+/**
+ * Интерфейс для работы с репозиторием новостей
+ */
 interface NewsRepository {
+    /**
+     * Запись новостей
+     */
     suspend fun insert(news: News)
 
-    // Получение всех айди новостей из бд
+    /**
+     * Получение всех id новостей
+     */
     suspend fun getAllNewsId(): List<String>
 
-    // Получение всех новостей из бд
+    /**
+     * Получение всех новостей
+     */
     suspend fun getAllNews(): List<News>
 
-    // TODO: Добавить алиас для String - NewsID
+    /**
+     * Удаление по id
+     */
     suspend fun deleteById(id: String)
 }

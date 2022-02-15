@@ -1,8 +1,7 @@
-package com.example.testapp.model
+package com.example.newsfeedapp.model
 
-import com.example.testapp.model.Data
-
-data class QueryResult(
-   val success: Boolean?,
-   val data: Data?
-)
+/**
+ * @param[success] Успешность формирования запроса.
+ * @param[data] Данные от сервиса.
+ */
+data class QueryResult(val success: Boolean?, val data: Data?)

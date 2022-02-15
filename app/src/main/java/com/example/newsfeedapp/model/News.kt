@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.newsfeedapp.model.News.Companion.TABLE_NAME
 
-
 @Entity(
     tableName = TABLE_NAME
 )

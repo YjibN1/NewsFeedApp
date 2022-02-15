@@ -10,13 +10,16 @@ import com.example.newsfeedapp.model.News
     entities = [News::class], version = 1
 )
 
-// База данных
+/**
+ * База данных
+ */
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun newsDao(): NewsDao
 
     companion object {
-        // Создание базы данных
+        /**
+         * Создание базы данных
+         */
         fun buildDatabase(context: Context, dbName: String): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, dbName).build()
         }

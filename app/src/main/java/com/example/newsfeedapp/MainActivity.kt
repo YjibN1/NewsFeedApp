@@ -1,16 +1,14 @@
 package com.example.newsfeedapp
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsfeedapp.model.News
-import com.example.testapp.model.Data
-import com.example.testapp.model.QueryResult
-import getQueryResult
+import com.example.newsfeedapp.model.Data
+import com.example.newsfeedapp.model.QueryResult
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +16,6 @@ import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var newsAdapter: NewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView(app: AppCompatActivity) {
-        newsAdapter = NewsAdapter(object : MyOnClickListener{
+        newsAdapter = NewsAdapter(object : OnClickListener{
             override fun onClicked(mobile_url: String?) {
 
                 val intent = Intent(app, BrowserActivity::class.java) // контекст и класс
@@ -99,6 +96,8 @@ class MainActivity : AppCompatActivity() {
             this.setHasFixedSize(true)
         }
     }
+
+    fun getNewsList(qRes: QueryResult) : List<News> = qRes.data?.news ?: listOf<News>()
 
     // Извлекаем и отображаем содержимое бд
     private fun retrieveNews() {
